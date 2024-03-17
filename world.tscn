@@ -1,0 +1,72 @@
+[gd_scene load_steps=7 format=3 uid="uid://bqlv7nvwib42o"]
+
+[ext_resource type="Texture2D" uid="uid://bwxkhwrdmgmgc" path="res://Assets/RocketShip.png" id="1_sv6dt"]
+[ext_resource type="Script" path="res://world.gd" id="1_vn4c6"]
+[ext_resource type="Texture2D" uid="uid://tv1f6s1a5753" path="res://Assets/LaunchButton.png" id="3_id1i2"]
+
+[sub_resource type="Animation" id="Animation_dfbqq"]
+resource_name = "Launch"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RocketShip:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(640, 620), Vector2(640, -100)]
+}
+
+[sub_resource type="Animation" id="Animation_offqa"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RocketShip:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(640, 620)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_55w2t"]
+_data = {
+"Launch": SubResource("Animation_dfbqq"),
+"RESET": SubResource("Animation_offqa")
+}
+
+[node name="World" type="Node"]
+script = ExtResource("1_vn4c6")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="RocketShip" type="Sprite2D" parent="."]
+position = Vector2(640, 620)
+scale = Vector2(2, 2)
+texture = ExtResource("1_sv6dt")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_55w2t")
+}
+
+[node name="Launch Button" type="TextureButton" parent="."]
+offset_left = 1167.0
+offset_top = 675.0
+offset_right = 1215.0
+offset_bottom = 691.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("3_id1i2")
+
+[connection signal="pressed" from="Launch Button" to="." method="_on_launch_button_pressed"]
